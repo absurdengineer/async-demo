@@ -36,17 +36,15 @@ getUser(1)
     .then(user => {
         console.log('User : ', user)
         getRepositories(user.gitHubUsername)
-            .then(repos => {
-                console.log("Repositories : " + repos)
-                getRepoDetails(repos[0])
-                    .then(repoDetail => {
-                        console.log("Details of First Repo : ", repoDetail)
-                    })
-                    .catch(err => console.log(`Error : ${err.message}`))
-            })
-            .catch(err => console.log(`Error : ${err.message}`))
     })
+    .then(repos => {
+        console.log("Repositories : " + repos)
+        getRepoDetails(repos[0])
+    })
+    .then(repoDetail => console.log("Details of First Repo : ", repoDetail))
     .catch(err => console.log(`Error : ${err.message}`))
+    // This catch will catch the error produced by any of the 
+    // above asyncronous operation.
 console.log("After")
 
 /* 
