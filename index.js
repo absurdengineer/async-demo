@@ -24,16 +24,20 @@ function getRepoDetails(repo, callback){
     }, 2000)
 }
 
-console.log('Before')   
-getUser(1, user => {
+function displayUser(user) {
     console.log('User : ', user)
-    getRepositories(user.gitHubUsername, repos => {
-        console.log("Repositories : " + repos)
-        getRepoDetails(repos[0], repoDetail => {
-            console.log("Details of First Repo : ", repoDetail)
-        })
-    })
-})
+    getRepositories(user.gitHubUsername, displayRepos)
+}
+function displayRepos(repos) {
+    console.log("Repositories : " + repos)
+    getRepoDetails(repos[0], displayRepoDetails)
+}
+function displayRepoDetails(repoDetail) {
+    console.log("Details of First Repo : ", repoDetail)
+}
+
+console.log('Before')   
+getUser(1, displayUser)
 console.log("After")
 
 /* 
