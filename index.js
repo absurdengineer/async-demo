@@ -1,43 +1,52 @@
-function getUser(id, callback){
-    setTimeout(() => { 
+function getUser(id){
+    return new Promise((resolve, reject) => {
+        // setTimeOut is an asyncronous method in js which doesn't block the execution.
+        setTimeout(() => { 
         console.log('Reading a user from database...')
-        callback({ id : id , gitHubUsername : 'mddalam1' })
-    }, 2000)
-    // setTimeOut is an asyncronous method in js which doesn't block the execution.
+        if(id) resolve({ id : id , gitHubUsername : 'mddalam1' })
+        else reject(new Error("Invalid User Id"))
+        }, 2000)
+    })
 }
-function getRepositories(username, callback){
-    setTimeout(() => {
+function getRepositories(username){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
         console.log('Calling GitHub API... ')
         if(username === 'mddalam1')
-            callback(['repo1', 'repo2', 'repo3'])
+            resolve(['repo1', 'repo2', 'repo3'])
         else
-            callback([])
-    }, 2000)
+            reject(new Error("No Repositories Found !!!"))
+        }, 2000)
+    }) 
 }
-function getRepoDetails(repo, callback){
-    setTimeout(() => {
-        console.log('Calling GitHub Repo API... ')
-        if(repo)
-            callback({name : "Express", commits : "7 commits"})
-        else
-            callback({})
-    }, 2000)
-}
-
-function displayUser(user) {
-    console.log('User : ', user)
-    getRepositories(user.gitHubUsername, displayRepos)
-}
-function displayRepos(repos) {
-    console.log("Repositories : " + repos)
-    getRepoDetails(repos[0], displayRepoDetails)
-}
-function displayRepoDetails(repoDetail) {
-    console.log("Details of First Repo : ", repoDetail)
+function getRepoDetails(repo){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log('Calling GitHub Repo API... ')
+            if(repo)
+                resolve({name : "Express", commits : "7 commits"})
+            else
+                reject(new Error("Repo Doesn't Exist"))
+        }, 2000)
+    })
 }
 
 console.log('Before')   
-getUser(1, displayUser)
+getUser(1)
+    .then(user => {
+        console.log('User : ', user)
+        getRepositories(user.gitHubUsername)
+            .then(repos => {
+                console.log("Repositories : " + repos)
+                getRepoDetails(repos[0])
+                    .then(repoDetail => {
+                        console.log("Details of First Repo : ", repoDetail)
+                    })
+                    .catch(err => console.log(`Error : ${err.message}`))
+            })
+            .catch(err => console.log(`Error : ${err.message}`))
+    })
+    .catch(err => console.log(`Error : ${err.message}`))
 console.log("After")
 
 /* 
