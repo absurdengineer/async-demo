@@ -31,16 +31,10 @@ function getRepoDetails(repo){
     })
 }
 
-console.log('Before')   
+console.log('Before')
 getUser(1)
-    .then(user => {
-        console.log('User : ', user)
-        getRepositories(user.gitHubUsername)
-    })
-    .then(repos => {
-        console.log("Repositories : " + repos)
-        getRepoDetails(repos[0])
-    })
+    .then(user => getRepositories(user.gitHubUsername))
+    .then(repos => getRepoDetails(repos[0]))
     .then(repoDetail => console.log("Details of First Repo : ", repoDetail))
     .catch(err => console.log(`Error : ${err.message}`))
     // This catch will catch the error produced by any of the 
