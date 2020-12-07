@@ -43,6 +43,15 @@ const p2 = new Promise((resolve, reject) => {
 // and return array of results from all passed promises for successful execution.
 // and if any of the operation fails then it gives the error for the whole operation.
 
-Promise.all([p1,p2])
+//Promise.all([p1,p2])
+//    .then(result => console.log(result))
+//    .catch(error => console.log(`Error : ${ error.message }`))
+
+// If you want to perform certain operation as soon as any of multiple asynchronous operations executes
+// then you can use Promise class's static method race() which takes array of promises as argument
+// and returns the result of first executed Asynchronous operation.
+// and if first executing asyncchronous operation failed then throws error.
+
+Promise.race([p1,p2])
     .then(result => console.log(result))
     .catch(error => console.log(`Error : ${ error.message }`))
