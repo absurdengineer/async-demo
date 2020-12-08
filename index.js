@@ -31,15 +31,36 @@ function getRepoDetails(repo){
     })
 }
 
-console.log('Before')
-getUser(1)
-    .then(user => getRepositories(user.gitHubUsername))
-    .then(repos => getRepoDetails(repos[0]))
-    .then(repoDetail => console.log("Details of First Repo : ", repoDetail))
-    .catch(err => console.log(`Error : ${err.message}`))
+
+// Promise-based approach
+
+// console.log('Before')
+// getUser(1)
+//     .then(user => getRepositories(user.gitHubUsername))
+//     .then(repos => getRepoDetails(repos[0]))
+//     .then(repoDetail => console.log("Details of First Repo : ", repoDetail))
+//     .catch(err => console.log(`Error : ${err.message}`))
     // This catch will catch the error produced by any of the 
     // above asyncronous operation.
-console.log("After")
+// console.log("After")
+
+
+// Async and Await approach
+// We can only use await inside an async function 
+// First the Asynchronous method gets called then the thread gets released
+// And when the result of Asynchronous operation avaialable
+// the thread comes back and continue its execution.
+async function displayDetails(id){
+    const user = await getUser(id)
+    console.log("User : ", user)
+    const repos = await getRepositories(user.gitHubUsername)
+    console.log("Repositories : ", repos)
+    const RepoDetails = await getRepoDetails(repos[0])
+    console.log("Reository Details : ", RepoDetails)
+}
+
+displayDetails(1)
+
 
 /* 
 
