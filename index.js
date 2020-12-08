@@ -51,12 +51,19 @@ function getRepoDetails(repo){
 // And when the result of Asynchronous operation avaialable
 // the thread comes back and continue its execution.
 async function displayDetails(id){
-    const user = await getUser(id)
-    console.log("User : ", user)
-    const repos = await getRepositories(user.gitHubUsername)
-    console.log("Repositories : ", repos)
-    const RepoDetails = await getRepoDetails(repos[0])
-    console.log("Reository Details : ", RepoDetails)
+    try {
+        const user = await getUser(id)
+        console.log("User : ", user)
+        const repos = await getRepositories(user.gitHubUsername)
+        console.log("Repositories : ", repos)
+        const RepoDetails = await getRepoDetails(repos[0])
+        console.log("Reository Details : ", RepoDetails)
+    }catch(err) {
+        console.log(`Error : ${err.message}`)
+    }
+    // In async and await approach we dont have a catch() method 
+    // so we wrap our code in try and catch block to 
+    // deal with the error.
 }
 
 displayDetails(1)
