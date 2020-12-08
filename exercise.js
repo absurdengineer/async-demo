@@ -25,22 +25,18 @@ const sendEmail = (email, movies) => {
     })
 }
 
-getCustomer(1)
-    .then(customer => {
-        console.log("customer : ", customer)
-        if(customer.isGold)
-            getTopMovies()
-                .then(movies => {
-                    console.log(`Top Movies are : ${movies}`)
-                    console.log("Sending ", movies, " to ", customer.email, "...")
-                    sendEmail(customer.email, movies)
-                        .then(() => {
-                            console.log("Email Sent.")
-                        })
-                        .catch(err => console.log(`Error : ${err.message}`))
-                })
-                .catch(err => console.log(`Error : ${err.message}`))
-        else
-            console.log("Not a Gold Customer")
-    })
-    .catch(err => console.log(`Error : ${err.message}`))
+const verifyAndSendMail = async id => {
+    const customer = await getCustomer(id)
+    console.log("customer : \n", customer)
+    if(customer.isGold){
+        const movies = await getTopMovies()
+        console.log(`Top Movies are : ${movies}`)
+        console.log("Sending ", movies, " to ", customer.email, "...")
+        const mailSent = await sendEmail(customer.email, movies)
+        console.log("Email Sent.")
+    }        
+    else
+        console.log("Not a Gold Customer")        
+} 
+
+verifyAndSendMail(1)
